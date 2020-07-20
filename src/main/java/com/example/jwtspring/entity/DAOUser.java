@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -26,6 +28,13 @@ public class DAOUser {
     @JsonIgnore
     private String password;
 
+    @ManyToMany
+    @JoinTable(
+            name = "USER_AUTHORITY",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_NAME", referencedColumnName = "NAME")})
+    private Set<Authority> authorities = new HashSet<>();
+
     public String getUsername() {
         return username;
     }
@@ -40,5 +49,13 @@ public class DAOUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 }
